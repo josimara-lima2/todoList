@@ -1,23 +1,40 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
+import ItemTask from './components/ItemTask.vue'
+import OInput from './components/OInput.vue'
+import ContainerCreateTask from "./components/ContainerCreateTask.vue";
+import ListaTasks from "./components/ListaTasks.vue";
+import { inject, onMounted, ref, watch, provide } from "vue";
+import OHeader from "./components/OHeader.vue";
+const tasks = ref([])
+const getTasksLocalStorage = () => {
+  const tasksList = localStorage.getItem('tasks');
+  console.log(tasksList)
+
+
+  tasks.value = JSON.parse(tasksList)
+  console.log(tasks.value)
+}
+
+
+provide('tasks', tasks)
+
+onMounted(() => {
+  getTasksLocalStorage()
+})
 </script>
 
 <template>
-  <header>
-    <!--  <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav> -->
-  </header>
-
-  <RouterView />
+                <OHeader/>
+                <div class="mt-72 mb-32">
+                  <img src="../public/Logo.png" />
+                </div>
+                <ContainerCreateTask />
+                 <ListaTasks /> 
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+
 
 .logo {
   display: block;
