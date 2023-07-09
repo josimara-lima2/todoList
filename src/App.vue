@@ -46,7 +46,12 @@ const concluir = (task) => {
  console.log(tasks.value)
   localStorage.setItem('tasks', JSON.stringify([...tasks.value]));
 }
-provide('tasks', {tasks, addNewItemTasks, concluir})
+
+const removeTask = (task) => {
+ tasks.value = tasks.value.filter(item => item.id !== task.id)
+ localStorage.setItem('tasks', JSON.stringify([...tasks.value]));
+}
+provide('tasks', {tasks, addNewItemTasks, concluir, removeTask})
 
 onMounted(() => {
    getTasksLocalStorage()
@@ -56,28 +61,59 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="max-h-screen overflow-hidden ">
+<div class="max-h-screen overflow-hidden w-full flex flex-col items-center justify-center">
   <OHeader/>
-  <div class="mt-72 mb-32 items-center flex w-full justify-center">
+  <div class=" max-w-[56rem] w-max md:w-[95vw] pb-40">
+    <div class="mt-72 mb-32 items-center flex w-full justify-center">
     <img src="../public/Logo.png" />
   </div>
   <ContainerCreateTask />
-  <div class="w-full py-24 flex gap-24 justify-between items-center">
-    <div class="flex gap-16">
-      <span>Tarefas Criadas</span>
-      <span>{{ tasks_criadas }}</span>
+  <div class="w-full pb-24 pt-52  flex gap-24 justify-between flex-wrap items-center">
+    <div class="flex gap-8">
+      <span  class="text-secondary font-bold text-sm ">Tarefas Criadas</span>
+      <span class="bg-gray-400 rounded-full flex py-2 px-8 flex-col justify-center items-center gap-10"> <span class="counter-text">{{ tasks_criadas }}</span></span>
     </div>
-    <div class="flex gap-16">
-      <span>Concluidas</span>
-      <span> {{ tasks_concluidas }} de {{ tasks_criadas }}</span>
+    <div class="flex gap-8">
+      <span class="text-primary font-bold text-sm">Concluídas</span>
+  
+      <span class="bg-gray-400 rounded-full flex py-2 px-8 flex-col justify-center items-center gap-10"> <span class="counter-text">{{ tasks_concluidas }} de {{ tasks_criadas }}</span></span>
     </div>
   </div>
    <ListaTasks /> 
+  </div>
 </div>
 </template>
 
 <style scoped>
+/* Scrollbar styles */
 
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 #646464;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #d9d9d9;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color:#646464;
+/*   background: repeating-linear-gradient(
+    45deg,
+   #646464,
+   #646464 5px,
+    #d9d9d9 5px,
+    #d9d9d9 10px
+  ); */
+  border-radius: 20px;
+  border: 3px solid #d9d9d9;
+}
 
 .logo {
   display: block;
@@ -133,6 +169,15 @@ nav a:first-of-type {
 
     padding: 1rem 0;
     margin-top: 1rem;
+  }
+
+  .counter-text{
+    color: var(--gray-200, #D9D9D9);
+font-family: Inter;
+font-size: 12px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
   }
 }
 </style>

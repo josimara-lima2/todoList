@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-16 m-auto flex-wrap items-center justify-center">
+    <div class="mt-[55px]  gap-16 m-auto flex flex-wrap items-center justify-center">
         <OInput :value="newTask" />
         <ButtonCreateTask @click:criar="criar" />
     </div>

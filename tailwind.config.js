@@ -2,7 +2,15 @@
 export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        xl: { max: "1920px" },
+        lg: { max: "1440px" },
+        md2: { max: "1280px" },
+        md: { max: "1024px" },
+        sm: { max: "600px" },
+      },
+    },
     /*     screens: {
       tablet: "640px",
       // => @media (min-width: 640px) { ... }
