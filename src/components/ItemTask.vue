@@ -1,9 +1,9 @@
 <template>
   <div class="itemTask">
-    <input type="radio">
+    <input type="radio" :checked="props.task.concluida" @click="$emit('click:concluir')">
     
-   <div class="w-[630px] flex flex-wrap break-words">
-    <slot name="texto">Texto base</slot>
+   <div class="w-[630px]  p-16 flex flex-wrap break-words" :class="props.task.concluida ? 'line-through' : ''">
+    <slot name="texto" >Texto base</slot>
    </div>
     <button>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -19,7 +19,13 @@
 </template>
 
 <script setup>
+const props = defineProps({
+  task:{
+    type: Object, default: {}
+  }
+})
 
+const emit = defineEmits(['click:concluir'])
 
 </script>
 

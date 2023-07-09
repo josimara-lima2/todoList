@@ -7,30 +7,73 @@ import ListaTasks from "./components/ListaTasks.vue";
 import { inject, onMounted, ref, watch, provide } from "vue";
 import OHeader from "./components/OHeader.vue";
 const tasks = ref([])
+const tasks_criadas = ref(0)
+const tasks_concluidas = ref(0)
 const getTasksLocalStorage = () => {
-  const tasksList = localStorage.getItem('tasks');
+  const tasksList = localStorage.getItem('tasks') || [];
   console.log(tasksList)
 
-
+  if(tasksList.length === 0){
+    tasks.value  = []
+    return
+  }
   tasks.value = JSON.parse(tasksList)
   console.log(tasks.value)
 }
 
+const calcularConcluidas = () => {
+  tasks_concluidas.value = tasks.value.filter(item => item.concluida === true).length;
+}
 
-provide('tasks', tasks)
+watch(()=>[tasks.value], () => {
+console.log('mudou')
+  tasks_criadas.value = tasks.value.length
+  calcularConcluidas()
+}, {deep:true})
+
+const addNewItemTasks = (obj) =>{
+  console.log('chamou')
+  tasks.value.push(obj)
+}
+
+const concluir = (task) => {
+  console.log(tasks.value, task)
+  const index = tasks.value.findIndex(item => item.id === task.id)
+  console.log(tasks.value)
+  if(index >= 0){
+    tasks.value.splice( index, 1 , task ) ;
+  }
+ console.log(tasks.value)
+  localStorage.setItem('tasks', JSON.stringify([...tasks.value]));
+}
+provide('tasks', {tasks, addNewItemTasks, concluir})
 
 onMounted(() => {
-  getTasksLocalStorage()
+   getTasksLocalStorage()
+   console.log(tasks.value)
+  tasks_criadas.value = tasks.value.length
 })
 </script>
 
 <template>
-                <OHeader/>
-                <div class="mt-72 mb-32">
-                  <img src="../public/Logo.png" />
-                </div>
-                <ContainerCreateTask />
-                 <ListaTasks /> 
+<div class="max-h-screen overflow-hidden ">
+  <OHeader/>
+  <div class="mt-72 mb-32 items-center flex w-full justify-center">
+    <img src="../public/Logo.png" />
+  </div>
+  <ContainerCreateTask />
+  <div class="w-full py-24 flex gap-24 justify-between items-center">
+    <div class="flex gap-16">
+      <span>Tarefas Criadas</span>
+      <span>{{ tasks_criadas }}</span>
+    </div>
+    <div class="flex gap-16">
+      <span>Concluidas</span>
+      <span> {{ tasks_concluidas }} de {{ tasks_criadas }}</span>
+    </div>
+  </div>
+   <ListaTasks /> 
+</div>
 </template>
 
 <style scoped>

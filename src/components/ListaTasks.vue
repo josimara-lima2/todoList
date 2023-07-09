@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col gap-12">
+    <div class="flex flex-col gap-12 overflow-y-auto overflow-x-hidden max-h-[300px] ">
 
-        <ItemTask v-for="task in tasks" :key="task.id">
+        <ItemTask v-for="task in tasks" :key="task.id" :task="task" @click:concluir="concluir({...task, concluida:!task.concluida})">
             <template #texto>
                 {{ task.text }}
             </template>
@@ -14,7 +14,7 @@
 import { inject, onMounted, provide, ref, watch } from 'vue';
 import ItemTask from './ItemTask.vue';
 
-const tasks = inject(('tasks'))
+const {tasks, concluir} = inject(('tasks'))
 
 onMounted(() => {
     console.log(tasks)
