@@ -4,6 +4,7 @@ import ItemTask from './components/ItemTask.vue'
 import OInput from './components/OInput.vue'
 import ContainerCreateTask from "./components/ContainerCreateTask.vue";
 import ListaTasks from "./components/ListaTasks.vue";
+import ListaVazia from "./components/ListaVazia.vue";
 import { inject, onMounted, ref, watch, provide } from "vue";
 import OHeader from "./components/OHeader.vue";
 const tasks = ref([])
@@ -79,7 +80,8 @@ onMounted(() => {
       <span class="bg-gray-400 rounded-full flex py-2 px-8 flex-col justify-center items-center gap-10"> <span class="counter-text">{{ tasks_concluidas }} de {{ tasks_criadas }}</span></span>
     </div>
   </div>
-   <ListaTasks /> 
+   <ListaTasks v-show="tasks_criadas > 0"/> 
+    <ListaVazia  v-show="tasks_criadas === 0" />
   </div>
 </div>
 </template>
