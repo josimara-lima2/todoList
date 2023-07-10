@@ -4,6 +4,7 @@ import ItemTask from './components/ItemTask.vue'
 import OInput from './components/OInput.vue'
 import ContainerCreateTask from "./components/ContainerCreateTask.vue";
 import ListaTasks from "./components/ListaTasks.vue";
+import ContainerInfo from "./components/ContainerInfo.vue";
 import ListaVazia from "./components/ListaVazia.vue";
 import { inject, onMounted, ref, watch, provide } from "vue";
 import OHeader from "./components/OHeader.vue";
@@ -64,24 +65,13 @@ onMounted(() => {
 <template>
 <div class="max-h-screen overflow-hidden w-full flex flex-col items-center justify-center">
   <OHeader/>
-  <div class=" max-w-[56rem] w-max md:w-[95vw] pb-40">
-    <div class="mt-72 mb-32 items-center flex w-full justify-center">
-    <img src="../public/Logo.png" />
-  </div>
+  <div  class="mt-0 max-w-[56rem] w-max md:w-[95vw] pb-40">
+    
   <ContainerCreateTask />
-  <div class="w-full pb-24 pt-52  flex gap-24 justify-between flex-wrap items-center">
-    <div class="flex gap-8">
-      <span  class="text-secondary font-bold text-sm ">Tarefas Criadas</span>
-      <span class="bg-gray-400 rounded-full flex py-2 px-8 flex-col justify-center items-center gap-10"> <span class="counter-text">{{ tasks_criadas }}</span></span>
-    </div>
-    <div class="flex gap-8">
-      <span class="text-primary font-bold text-sm">Concluídas</span>
+  <ContainerInfo :tasks_concluidas="tasks_concluidas" :tasks_criadas="tasks_criadas" />
   
-      <span class="bg-gray-400 rounded-full flex py-2 px-8 flex-col justify-center items-center gap-10"> <span class="counter-text">{{ tasks_concluidas }} de {{ tasks_criadas }}</span></span>
-    </div>
-  </div>
-   <ListaTasks v-show="tasks_criadas > 0"/> 
-    <ListaVazia  v-show="tasks_criadas === 0" />
+   <ListaTasks v-if="tasks_criadas > 0"/> 
+    <ListaVazia  v-else />
   </div>
 </div>
 </template>
@@ -106,13 +96,7 @@ onMounted(() => {
 
 *::-webkit-scrollbar-thumb {
   background-color:#646464;
-/*   background: repeating-linear-gradient(
-    45deg,
-   #646464,
-   #646464 5px,
-    #d9d9d9 5px,
-    #d9d9d9 10px
-  ); */
+
   border-radius: 20px;
   border: 3px solid #d9d9d9;
 }
@@ -173,13 +157,6 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 
-  .counter-text{
-    color: var(--gray-200, #D9D9D9);
-font-family: Inter;
-font-size: 12px;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-  }
+ 
 }
 </style>

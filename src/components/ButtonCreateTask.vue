@@ -1,6 +1,6 @@
 <template>
     
-        <button class="btn h-52  " @click="emit('click:criar')">Criar
+        <button class="btn h-52" :class="disabled ? 'cursor-not-allowed' : ''" @click="emit('click:criar')">Criar
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_2106_54)">
                     <path
@@ -22,6 +22,12 @@
 </template>
 
 <script setup>
+const props = defineProps({
+    disabled: {
+        type: Boolean,
+        default: null
+    }
+})
 const emit = defineEmits(['click:criar'])
 </script>
 
