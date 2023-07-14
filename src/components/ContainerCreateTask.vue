@@ -1,15 +1,17 @@
 <template>
     <div class="-mt-[30px] sm:mt-[30px] gap-16 m-auto flex flex-wrap items-center justify-center">
         <OInput :value="newTask" />
-        <ButtonCreateTask @click:criar="criar" :disabled="!disabled"/>
+        <ButtonCreateTask @click:criar="criar()" :disabled="!disabled"/>
     </div>
 </template>
 
 <script setup>
 import OInput from './OInput.vue';
 import ButtonCreateTask from './ButtonCreateTask.vue'
+
 import { inject, onMounted, ref, watch } from 'vue';
 const { addNewItemTasks} = inject('tasks')
+
 const newTask = ref({ id: '', text: '', conluida: false })
 const disabled = ref(false)
 watch(() => [newTask.value], () => {
@@ -20,7 +22,7 @@ watch(() => [newTask.value], () => {
     }
 }, {deep:true})
 
-const criar = () => {
+ const criar = () => {
 
     if (newTask.value.text === '') return
     const tasksList = JSON.parse(localStorage.getItem('tasks') ) || []
@@ -28,13 +30,14 @@ const criar = () => {
     addNewItemTasks({id: tasksList[tasksList.length - 1]?.id + 1 || 1, text: newTask.value.text, concluida:newTask.value.conluida})
     newTask.value = { id: '', text: '', conluida:false }
 }
-
+ 
 const handleClickEnter = () => {
     const input = document.querySelector('.input')
     if(input){
         input.addEventListener('keypress', (event) => {
             if (event.key === "Enter"){
-                criar()
+
+               criar()
             }
         })
     }

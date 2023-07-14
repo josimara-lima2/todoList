@@ -5,19 +5,11 @@ import ContainerInfo from "./components/ContainerInfo.vue";
 import ListaVazia from "./components/ListaVazia.vue";
 import { onMounted, ref, watch, provide } from "vue";
 import OHeader from "./components/OHeader.vue";
-const tasks = ref([]);
+import useTasks from "./composables/useTasks";
 const tasks_criadas = ref(0);
 const tasks_concluidas = ref(0);
-const getTasksLocalStorage = () => {
-  const tasksList = localStorage.getItem("tasks") || [];
-  console.log(tasksList);
 
-  if (tasksList.length === 0) {
-    tasks.value = [];
-    return;
-  }
-  tasks.value = JSON.parse(tasksList);
-};
+const {tasks, getTasksLocalStorage, removeTask, concluir,addNewItemTasks} = useTasks()
 
 const calcularConcluidas = () => {
   tasks_concluidas.value = tasks.value.filter(
@@ -28,32 +20,15 @@ const calcularConcluidas = () => {
 watch(
   () => [tasks.value],
   () => {
-    console.log("mudou");
+    
     tasks_criadas.value = tasks.value.length;
     calcularConcluidas();
   },
   { deep: true }
 );
 
-const addNewItemTasks = (obj) => {
-  console.log("chamou");
-  tasks.value.push(obj);
-};
 
-const concluir = (task) => {
-  console.log(tasks.value, task);
-  const index = tasks.value.findIndex((item) => item.id === task.id);
-  if (index >= 0) {
-    tasks.value.splice(index, 1, task);
-  }
-  localStorage.setItem("tasks", JSON.stringify([...tasks.value]));
-};
-
-const removeTask = (task) => {
-  tasks.value = tasks.value.filter((item) => item.id !== task.id);
-  localStorage.setItem("tasks", JSON.stringify([...tasks.value]));
-};
-provide("tasks", { tasks, addNewItemTasks, concluir, removeTask });
+provide("tasks", { tasks, addNewItemTasks, concluir, removeTask, });
 
 onMounted(() => {
   getTasksLocalStorage();
