@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
-const tasks = ref([]);
 export default function useTasks() {
+  const tasks = ref([]);
   const getTasksLocalStorage = () => {
     const tasksList = localStorage.getItem("tasks") || [];
     if (tasksList.length === 0) {
