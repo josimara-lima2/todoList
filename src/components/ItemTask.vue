@@ -18,7 +18,7 @@
    <div class="w-[630px] md:!w-full p-16 flex flex-wrap break-words" :class="props.task.concluida ? 'line-through' : ''">
     <slot name="texto" >Texto base</slot>
    </div>
-    <button @click="$emit('click:excluir')" class="hover:text-secondary text-[#808080]">
+    <button @click="$emit('click:excluir')" class="hover:text-secondary text-gray-300">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M14.2021 9.98548H12.8716V15.5073H14.2021V9.98548Z" fill="currentColor" />
         <path d="M11.4624 9.98548H10.1318V15.5073H11.4624V9.98548Z" fill="currentColor" />

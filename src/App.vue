@@ -1,79 +1,82 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import ItemTask from './components/ItemTask.vue'
-import OInput from './components/OInput.vue'
 import ContainerCreateTask from "./components/ContainerCreateTask.vue";
 import ListaTasks from "./components/ListaTasks.vue";
 import ContainerInfo from "./components/ContainerInfo.vue";
 import ListaVazia from "./components/ListaVazia.vue";
-import { inject, onMounted, ref, watch, provide } from "vue";
+import { onMounted, ref, watch, provide } from "vue";
 import OHeader from "./components/OHeader.vue";
-const tasks = ref([])
-const tasks_criadas = ref(0)
-const tasks_concluidas = ref(0)
+const tasks = ref([]);
+const tasks_criadas = ref(0);
+const tasks_concluidas = ref(0);
 const getTasksLocalStorage = () => {
-  const tasksList = localStorage.getItem('tasks') || [];
-  console.log(tasksList)
+  const tasksList = localStorage.getItem("tasks") || [];
+  console.log(tasksList);
 
-  if(tasksList.length === 0){
-    tasks.value  = []
-    return
+  if (tasksList.length === 0) {
+    tasks.value = [];
+    return;
   }
-  tasks.value = JSON.parse(tasksList)
-  console.log(tasks.value)
-}
+  tasks.value = JSON.parse(tasksList);
+};
 
 const calcularConcluidas = () => {
-  tasks_concluidas.value = tasks.value.filter(item => item.concluida === true).length;
-}
+  tasks_concluidas.value = tasks.value.filter(
+    (item) => item.concluida === true
+  ).length;
+};
 
-watch(()=>[tasks.value], () => {
-console.log('mudou')
-  tasks_criadas.value = tasks.value.length
-  calcularConcluidas()
-}, {deep:true})
+watch(
+  () => [tasks.value],
+  () => {
+    console.log("mudou");
+    tasks_criadas.value = tasks.value.length;
+    calcularConcluidas();
+  },
+  { deep: true }
+);
 
-const addNewItemTasks = (obj) =>{
-  console.log('chamou')
-  tasks.value.push(obj)
-}
+const addNewItemTasks = (obj) => {
+  console.log("chamou");
+  tasks.value.push(obj);
+};
 
 const concluir = (task) => {
-  console.log(tasks.value, task)
-  const index = tasks.value.findIndex(item => item.id === task.id)
-  console.log(tasks.value)
-  if(index >= 0){
-    tasks.value.splice( index, 1 , task ) ;
+  console.log(tasks.value, task);
+  const index = tasks.value.findIndex((item) => item.id === task.id);
+  if (index >= 0) {
+    tasks.value.splice(index, 1, task);
   }
- console.log(tasks.value)
-  localStorage.setItem('tasks', JSON.stringify([...tasks.value]));
-}
+  localStorage.setItem("tasks", JSON.stringify([...tasks.value]));
+};
 
 const removeTask = (task) => {
- tasks.value = tasks.value.filter(item => item.id !== task.id)
- localStorage.setItem('tasks', JSON.stringify([...tasks.value]));
-}
-provide('tasks', {tasks, addNewItemTasks, concluir, removeTask})
+  tasks.value = tasks.value.filter((item) => item.id !== task.id);
+  localStorage.setItem("tasks", JSON.stringify([...tasks.value]));
+};
+provide("tasks", { tasks, addNewItemTasks, concluir, removeTask });
 
 onMounted(() => {
-   getTasksLocalStorage()
-   console.log(tasks.value)
-  tasks_criadas.value = tasks.value.length
-})
+  getTasksLocalStorage();
+
+  tasks_criadas.value = tasks.value.length;
+});
 </script>
 
 <template>
-<div class="max-h-screen overflow-hidden w-full flex flex-col items-center justify-center">
-  <OHeader/>
-  <div  class="mt-0 max-w-[56rem] w-max md:w-[95vw] pb-40">
-    
-  <ContainerCreateTask />
-  <ContainerInfo :tasks_concluidas="tasks_concluidas" :tasks_criadas="tasks_criadas" />
-  
-   <ListaTasks v-if="tasks_criadas > 0"/> 
-    <ListaVazia  v-else />
+  <div
+    class="max-h-screen overflow-hidden w-full flex flex-col items-center justify-center"
+  >
+    <OHeader />
+    <div class="mt-0 max-w-[56rem] w-max md:w-[95vw] pb-40">
+      <ContainerCreateTask />
+      <ContainerInfo
+        :tasks_concluidas="tasks_concluidas"
+        :tasks_criadas="tasks_criadas"
+      />
+      <ListaTasks v-if="tasks_criadas > 0" />
+      <ListaVazia v-else />
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>
@@ -82,7 +85,7 @@ onMounted(() => {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d9d9d9 #646464;
+  scrollbar-color: #d9d9d9 #8284fa;
 }
 
 /* Chrome, Edge, and Safari */
@@ -92,10 +95,11 @@ onMounted(() => {
 
 *::-webkit-scrollbar-track {
   background: #d9d9d9;
+  border-radius: 20px;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color:#646464;
+  background-color: #8284fa;
 
   border-radius: 20px;
   border: 3px solid #d9d9d9;
@@ -156,7 +160,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-
- 
 }
 </style>

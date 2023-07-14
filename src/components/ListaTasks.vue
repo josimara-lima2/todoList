@@ -1,6 +1,5 @@
 <template>
-    <div class="flex flex-col gap-12 overflow-y-auto overflow-x-hidden max-h-[300px]">
-
+    <div class="flex pr-4 flex-col gap-12 overflow-y-auto overflow-x-hidden max-h-[300px] sm:max-h-[250px] sm:mb-40 ">
         <ItemTask v-for="task in tasks" :key="task.id" :task="task" @click:excluir="removeTask(task)" @click:concluir="concluir({...task, concluida:!task.concluida})">
             <template #texto>
                 {{ task.text }}
@@ -11,14 +10,11 @@
 </template>
 
 <script setup>
-import { inject, onMounted, provide, ref, watch } from 'vue';
+import { inject} from 'vue';
 import ItemTask from './ItemTask.vue';
 
 const {tasks, concluir, removeTask} = inject(('tasks'))
 
-onMounted(() => {
-    console.log(tasks)
-})
 </script>
 
 <style lang="scss" scoped></style>
